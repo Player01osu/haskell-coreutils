@@ -2,7 +2,7 @@ import Control.Monad (liftM)
 import Data.List (sort)
 import System.Directory (getDirectoryContents, listDirectory)
 import System.Environment (getArgs)
-import System.Exit (ExitCode(..), exitWith)
+import System.Exit (exitFailure)
 import System.IO (hPutStrLn, stderr)
 import Text.Printf (printf)
 
@@ -158,7 +158,7 @@ flags =
 
 noArgs args =
   (liftM (unwords . sort . filter ((/= '.') . head)) $ getDirectoryContents "./") >>=
-putStrLn
+  putStrLn
 
 listAll args = (liftM (unwords . sort) $ listDirectory "./") >>= putStrLn
 
@@ -167,7 +167,7 @@ printHelp _ = hPutStrLn stderr help
 unknownFlag x = do
   hPutStrLn stderr (printf "unknown flag: %s" x)
   printHelp []
-  exitWith $ ExitFailure 1
+  exitFailure
 
 findFlag x = go x flags
   where
